@@ -1,11 +1,28 @@
+# item-service-dev.yml
+
 spring:
   application:
     name: item-service
+  cloud:
+    config:
+      override-none: true #防止配置中心的配置覆盖本地配置
 
+  rabbitmq:
+    host: 192.168.64.151
+    port: 5672
+    username: admin
+    password: admin
+
+  zipkin:
+    sender:
+      type: rabbit
+
+# 8001, 8101, 8201
 server:
   port: 8001
 
 eureka:
   client:
     service-url:
-      defaultZone: http://eureka1:2001/eureka,http://eureka2:2002/eureka
+      # 默认地点，
+      defaultZone: http://eureka1:2001/eureka,http:/eureka2:2002/eureka

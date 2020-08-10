@@ -1,6 +1,19 @@
 spring:
   application:
     name: zuul
+  cloud:
+    config:
+      override-none: true
+
+  rabbitmq:
+    host: 192.168.64.151
+    port: 5672
+    username: admin
+    password: admin
+
+  zipkin:
+    sender:
+      type: rabbit
 
 server:
   port: 3001
@@ -8,8 +21,10 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://eureka1:2001/eureka, http://eureka2:2002/eureka
+      defaultZone: http://eureka1:2001/eureka,http://eureka2:2002/eureka
 
+# 默认规则
+# 根据 eureka 注册中心的注册信息，进行自动配置
 zuul:
   routes:
     item-service: /item-service/**
@@ -19,10 +34,17 @@ zuul:
   retryable: true
 
 ribbon:
-  ReadTimeout:1000
-  MaxAutoRetries:1
-  MaxAutoRetriesNextService:2
+  ReadTimeout: 1000
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 2
 
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1000
 management:
   endpoints:
     web:
